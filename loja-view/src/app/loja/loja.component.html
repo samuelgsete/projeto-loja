@@ -17,6 +17,12 @@
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </div>
     <div class="loja z-depth-1-half">
+        <mat-form-field class="input-width" appearance="fill">
+            <input [formControl]="search" matInput placeholder="Qual loja deseja gerenciar?">
+            <button mat-icon-button matSuffix>
+                <mat-icon>search</mat-icon>
+            </button>
+        </mat-form-field>
         <div class="empty-data" *ngIf="lojas.length == 0">
             <img src="/assets/img/info.png" width="128px" height="128px" alt="sem registros">
             <h4>Nenhuma loja cadastrada</h4>
@@ -49,6 +55,14 @@
                     </mdb-card-body>
                 </mdb-card>
             </div>
+        </div>
+        <div class="pagination">
+            <button style="margin-right: 10px;" mat-fab class="indigo text-white z-depth-0" (click)="changePage(false)" [disabled]="paginacao.pagina == 1" matTooltip="regressar página">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <button mat-fab class="indigo text-white z-depth-0" (click)="changePage(true)" [disabled]="paginacao.pagina > paginacao.total/paginacao.tamanho" matTooltip="próxima página">
+                <mat-icon>arrow_forward</mat-icon>
+            </button>
         </div>
     </div>
 </div>

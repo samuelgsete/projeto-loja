@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-xl-9 col-lg-8 col-md-8 col-sm-6">
                 <div class="name-page">
-                    <mat-icon>how_to_vote</mat-icon>
+                    <mat-icon>school</mat-icon>
                     <h2>Funcionários</h2>
                 </div>
             </div>
@@ -13,19 +13,14 @@
             </div>
         </div>
     </div>
-    <div class="progress-bar" *ngIf="loading">
-        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-    </div>
     <div class="funcionario z-depth-1-half">
-        <div class="all-delete">
-            <div class="alert alert-warning" role="alert" *ngIf="funcionariosSelecionados.length > 1">
-                {{ funcionariosSelecionados.length }} selecionado(s) ...
-                <button (click)="deleteSelected()" mat-icon-button>
-                    <mat-icon>delete</mat-icon>
-                </button>
-            </div>
-        </div>  
         <div class="main">
+            <mat-form-field class="input-width" appearance="fill">
+                <input [formControl]="search" matInput placeholder="Pesquise um funcionário pelo nome">
+                <button mat-icon-button matSuffix>
+                    <mat-icon>search</mat-icon>
+                </button>
+            </mat-form-field>
             <ngx-datatable
                 [rows]="funcionarios"
                 class="material"
@@ -39,7 +34,10 @@
                 (select)="whenSelecting($event)"
                 [selected]="funcionariosSelecionados"
                 [externalPaging]="true"
-                [count]="funcionarios.length"
+                [count]="paginacao.total"
+                [offset]="paginacao.pagina-1"
+                [limit]="paginacao.tamanho"
+                (page)="setPage($event)"
             >
                 <ngx-datatable-column
                     [width]="50"
@@ -66,15 +64,23 @@
                 </ngx-datatable-column>
                 <ngx-datatable-column name="Ações" [width]="100">
                     <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                        <button class="button-actions"mat-icon-button (click)="showModalUpdate(row)">
+                        <button class="button-actions"mat-icon-button matTooltip="Editar este funcionário" (click)="showModalUpdate(row)">
                             <mat-icon>edit</mat-icon>
                         </button>
-                        <button class="button-actions"mat-icon-button (click)="deleteOne(row)">
+                        <button class="button-actions" mat-icon-button matTooltip="Remover este funcionário" (click)="deleteOne(row)">
                             <mat-icon>delete</mat-icon>
                         </button>
                     </ng-template>
                 </ngx-datatable-column>
             </ngx-datatable>
+            <div class="all-delete">
+                <div class="alert alert-warning" role="alert" *ngIf="funcionariosSelecionados.length > 1">
+                    {{ funcionariosSelecionados.length }} selecionado(s) ...
+                    <button (click)="deleteSelected()" mat-icon-button>
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </div>  
         </div>
     </div>
 </div>

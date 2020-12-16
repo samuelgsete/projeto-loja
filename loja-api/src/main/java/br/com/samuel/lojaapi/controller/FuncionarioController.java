@@ -1,6 +1,5 @@
 package br.com.samuel.lojaapi.controller;
 
-import java.util.List;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import br.com.samuel.lojaapi.entity.FiltroBusca;
 import br.com.samuel.lojaapi.entity.Funcionario;
+import br.com.samuel.lojaapi.entity.Tupla;
+import br.com.samuel.lojaapi.exceptions.models.NotFoundException;
 import br.com.samuel.lojaapi.services.FuncionarioService;
 
 @RestController
@@ -23,13 +26,18 @@ public class FuncionarioController {
     private FuncionarioService funcionarioService;
 
     @GetMapping("/{lojaId}")
-    public List<Funcionario> findAll(@PathVariable("lojaId") Integer lojaId) { 
-        return funcionarioService.findByIdLoja(lojaId); 
+    public Tupla<Funcionario> findAll(
+                                        @PathVariable("lojaId") Integer lojaId,
+                                        @RequestParam("palavra") String palavra,
+                                        @RequestParam("pagina") int pagina
+                                    ) throws NotFoundException 
+    {
+        FiltroBusca filtro = new FiltroBusca(palavra, pagina, 5);
+        return funcionarioService.findByIdLoja(lojaId, filtro); 
     }
 
     @PostMapping("/{lojaId}")
     public void save(@PathVariable("lojaId") Integer lojaId, @RequestBody() Funcionario funcionario) { 
-        System.out.println(funcionario);
         funcionarioService.save(lojaId, funcionario); 
     }
 

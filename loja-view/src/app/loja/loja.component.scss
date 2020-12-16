@@ -59,5 +59,14 @@
                 outline: none;
             }
         }
+
+        .pagination {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            button:focus {
+                outline: none;
+            }
+        }
     }  
 }

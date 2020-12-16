@@ -1,7 +1,6 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 
-import { Observable } from "rxjs";
 import { Funcionario } from "../models/funcionario.entity";
 
 @Injectable()
@@ -11,8 +10,11 @@ export class FuncionarioService {
 
     public constructor(private http: HttpClient) {}
 
-    public findAll(lojaId: number): Observable<Funcionario[]> {
-        return this.http.get<Funcionario[]>(this.urlBase.concat(`/${lojaId}`));
+    public findAll(lojaId: number, palavra: string, pagina: number) {
+        const _params = new HttpParams().set('palavra', `${palavra}`).set('pagina', `${pagina}`);
+        return this.http.get<any>(this.urlBase.concat(`/${lojaId}`), {
+            observe: 'response', params: _params
+        });
     }
 
     public create(lojaId: number, funcionario: Funcionario) {

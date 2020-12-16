@@ -1,7 +1,6 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 
-import { Observable } from "rxjs";
 import { Loja } from "../models/loja.entity";
 
 @Injectable()
@@ -11,8 +10,11 @@ export class LojaService {
 
     public constructor(private http: HttpClient) {}
 
-    public findAll(): Observable<Loja[]> {
-        return this.http.get<Loja[]>(this.urlBase);
+    public findAll(palavra: string, pagina: number) {
+        const _params = new HttpParams().set('palavra', `${palavra}`).set('pagina', `${pagina}`);
+        return this.http.get<any>(this.urlBase, {
+            observe: 'response', params: _params
+        });
     }
 
     public create(loja: Loja) {
