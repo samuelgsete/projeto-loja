@@ -1,0 +1,63 @@
+.body { 
+    .hero {
+        height: 220px;
+        padding: 60px 35px;
+       
+        .name-page {                
+            h2 {
+                color: #fff;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+            }
+    
+            mat-icon { 
+                cursor: pointer;
+                float:left;
+                margin-right: 30px;
+                font-size: 32px;
+                color: #fff;
+            }
+
+            h2, mat-icon { cursor: pointer; }
+        }
+        
+        button {  margin-top: -10px } 
+    }
+
+    .progress-bar {
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+        z-index: 99999999;
+    }
+
+    .loja {
+        margin: -70px 35px;
+        padding: 30px 35px 40px 35px;
+        border-radius: 6px;
+        background-color: #fff;
+
+        .empty-data {
+            font-family: 'Lato', sans-serif;
+            text-align: center;
+            padding: 50px;
+            img { margin-bottom: 15px }
+        }
+        
+        mdb-card {
+            font-family: 'Lato', sans-serif;
+            text-align: center;
+            padding: 15px;
+            margin-bottom: 30px;
+
+            mdb-badge {
+                font-size: 16px; 
+                font-weight: normal; 
+                margin-top: 5px;
+            }
+    
+            button:focus {
+                outline: none;
+            }
+        }
+    }  
+}

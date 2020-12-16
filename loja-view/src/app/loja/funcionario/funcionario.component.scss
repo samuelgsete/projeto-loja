@@ -1,0 +1,80 @@
+.body {
+    .hero {
+        height: 220px;
+        padding: 60px 35px;
+       
+        .name-page {                
+            h2 {
+                color: #fff;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+            }
+    
+            mat-icon { 
+                cursor: pointer;
+                float:left;
+                margin-right: 30px;
+                font-size: 32px;
+                color: #fff;
+            }
+
+            h2, mat-icon { cursor: pointer; }
+        }
+        
+        button {  margin-top: -10px } 
+    }
+
+    .progress-bar {
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+        z-index: 99999999;
+    }
+
+    .funcionario {
+        margin: -70px 35px;
+        padding: 30px 35px 40px 35px;
+        border-radius: 6px;
+        background-color: #fff;
+
+        .all-delete { 
+            margin-top: 10px;
+            button { 
+                float: right;
+                margin-top:-8px;
+            }
+
+            button:focus { outline: none }
+        }
+
+        .main {
+            ngx-datatable {
+                width: 100%; 
+                margin-top: 10px;
+                box-shadow: none;
+
+                .button-actions { margin-top: -5px }
+
+                .button-actions:focus { outline: none }
+
+                .status {
+                    color: #fff;
+                    border-radius: 15px;
+                    padding: 5px;
+                    text-align: center;
+                    cursor: pointer;
+                }   
+            }
+        }
+    }
+}
+
+p.empty-phone {
+    text-align: center;
+    font-family: 'Lato', sans-serif;
+    padding: 15px;
+}
+
+.btn-remove-contato {
+    outline: none;
+    margin-top: 10px;
+}

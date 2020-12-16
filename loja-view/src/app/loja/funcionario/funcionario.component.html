@@ -1,0 +1,239 @@
+<app-menu></app-menu>
+<div class="body body-background">
+    <div class="hero hero-background">
+        <div class="row">
+            <div class="col-xl-9 col-lg-8 col-md-8 col-sm-6">
+                <div class="name-page">
+                    <mat-icon>how_to_vote</mat-icon>
+                    <h2>Funcionários</h2>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
+                <button type="button" mdbBtn color="light" block="true" class="z-depth-0" (click)="modalCreate.show()" mdbWavesEffect>NOVA FUNCIONÁRIO</button>
+            </div>
+        </div>
+    </div>
+    <div class="progress-bar" *ngIf="loading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+    <div class="funcionario z-depth-1-half">
+        <div class="all-delete">
+            <div class="alert alert-warning" role="alert" *ngIf="funcionariosSelecionados.length > 1">
+                {{ funcionariosSelecionados.length }} selecionado(s) ...
+                <button (click)="deleteSelected()" mat-icon-button>
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </div>  
+        <div class="main">
+            <ngx-datatable
+                [rows]="funcionarios"
+                class="material"
+                [loadingIndicator]="loading"
+                [columnMode]="'force'"
+                [headerHeight]="50"
+                [footerHeight]="50"
+                [rowHeight]="'auto'"
+                [messages]="{emptyMessage: '<center>Nenhum funcionário cadastrado</center>', totalMessage: 'total', selectedMessage: 'selecionado'}"
+                [selectionType]="'checkbox'"
+                (select)="whenSelecting($event)"
+                [selected]="funcionariosSelecionados"
+                [externalPaging]="true"
+                [count]="funcionarios.length"
+            >
+                <ngx-datatable-column
+                    [width]="50"
+                    [sortable]="false"
+                    [canAutoResize]="false"
+                    [draggable]="false"
+                    [resizeable]="false"
+                    [headerCheckboxable]="true"
+                    [checkboxable]="true">
+        
+                </ngx-datatable-column>
+                <ngx-datatable-column name="ID" [width]="50" prop="id"></ngx-datatable-column>
+                <ngx-datatable-column name="Nome" [width]="150" prop="nome"></ngx-datatable-column>
+                <ngx-datatable-column name="CPF" [width]="100">
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                        <div >{{ row.cpf | mask: '000.000.000-00' }}</div>
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Email" [width]="100" prop="email"></ngx-datatable-column>
+                <ngx-datatable-column name="Situação" [width]="100">
+                    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                        <div class="status" [ngClass]="{'info-color': row.status, 'danger-color': !row.status }" mdbWavesEffect>{{ row.status ? 'ATIVO' : 'INATIVO' }}</div>
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Ações" [width]="100">
+                    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                        <button class="button-actions"mat-icon-button (click)="showModalUpdate(row)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button class="button-actions"mat-icon-button (click)="deleteOne(row)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </ng-template>
+                </ngx-datatable-column>
+            </ngx-datatable>
+        </div>
+    </div>
+</div>
+<app-footer></app-footer>
+
+<div mdbModal #modalCreate="mdbModal" class="modal fade" style="overflow-y: auto">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-right btn-hide-modal" (click)="hideModalCreate()">
+            <span>×</span>
+          </button>
+          <h4 class="modal-title w-100 text-center">NOVO FUNCIONÁRIO</h4>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="form">
+                <div class="row">
+                    <div class="col">
+                        <mat-form-field  class="input-width">
+                            <input matInput placeholder="Nome" formControlName="nome" maxlength="60" required>
+                            <mat-error *ngIf="this.form['controls']['nome'].errors?.required">O nome é obrigatório</mat-error>
+                            <mat-error *ngIf="this.form['controls']['nome'].errors?.minlength">Informe no mínimo 4 dígitos</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <mat-form-field  class="input-width">
+                            <input matInput placeholder="CPF" formControlName="cpf" mask="000.000.000-00" required>
+                            <mat-error *ngIf="this.form['controls']['cpf'].errors?.required">O CPF é obrigatório</mat-error>
+                            <mat-error *ngIf="this.form['controls']['cpf'].errors?.mask">Informe todos os dígitos</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field  class="input-width">
+                            <input matInput placeholder="E-mail" formControlName="email" maxlength="60" required>
+                            <mat-error *ngIf="this.form['controls']['email'].errors?.required">O email é obrigatório</mat-error>
+                            <mat-error *ngIf="this.form['controls']['email'].errors?.email">O email deve ser válido</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <h5>Contatos</h5>
+                    </div>
+                    <div class="col-6">
+                        <button type="button" block="true" mdbBtn color="primary" class="z-depth-0" (click)="adicionarContato()" mdbWavesEffect>ADICIONAR</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <br>
+                </div>
+                <div class="row" *ngFor="let control of telefoneFormArray.controls; let i = index">
+                    <div class="col-5">
+                        <mat-form-field class="input-width">
+                            <mat-label>Operadora</mat-label>
+                            <mat-select [formControl]="this.telefoneFormArray.controls[i]['controls']['operadora']">
+                                <mat-option *ngFor="let operadora of operadoras" [value]="operadora">{{ operadora }}</mat-option>
+                            </mat-select>
+                            <mat-error>A operadora é obrigatória</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-5">
+                        <mat-form-field  class="input-width">
+                            <input matInput placeholder="Número" [formControl]="this.telefoneFormArray.controls[i]['controls']['numero']" mask="(00)00000-0000" required>
+                            <mat-error *ngIf="telefoneFormArray.controls[i]['controls']['numero'].errors?.required">O número é obrigatório</mat-error>
+                            <mat-error *ngIf="telefoneFormArray.controls[i]['controls']['numero'].errors?.mask">Informe todos os dígitos</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-2">
+                        <button mat-icon-button class="btn-remove-contato" (click)="removerContato(i)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer"> 
+          <button type="button" block="true" mdbBtn color="indigo" class="z-depth-0" [disabled]="!form.valid" (click)="saveOrUpdate(form.value)" mdbWavesEffect>CADASTRAR</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div mdbModal #modalUpdate="mdbModal" class="modal fade" style="overflow-y: auto">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-right btn-hide-modal" (click)="hideModalUpdate()">
+            <span>×</span>
+          </button>
+          <h4 class="modal-title w-100 text-center">ATUALIZAR FUNCIONÁRIO</h4>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="form">
+                <div class="row">
+                    <div class="col">
+                        <mat-form-field  class="input-width">
+                            <input matInput placeholder="Nome" formControlName="nome" maxlength="60" required>
+                            <mat-error *ngIf="this.form['controls']['nome'].errors?.required">O nome é obrigatório</mat-error>
+                            <mat-error *ngIf="this.form['controls']['nome'].errors?.minlength">Informe no mínimo 4 dígitos</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <mat-form-field  class="input-width">
+                            <input matInput placeholder="CPF" formControlName="cpf" mask="000.000.000-00" required>
+                            <mat-error *ngIf="this.form['controls']['cpf'].errors?.required">O CPF é obrigatório</mat-error>
+                            <mat-error *ngIf="this.form['controls']['cpf'].errors?.mask">Informe todos os dígitos</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field  class="input-width">
+                            <input matInput placeholder="E-mail" formControlName="email" maxlength="60" required>
+                            <mat-error *ngIf="this.form['controls']['email'].errors?.required">O email é obrigatório</mat-error>
+                            <mat-error *ngIf="this.form['controls']['email'].errors?.email">O email deve ser válido</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <h5>Contatos</h5>
+                    </div>
+                    <div class="col-6">
+                        <button type="button" block="true" mdbBtn color="primary" class="z-depth-0" (click)="adicionarContato()" mdbWavesEffect>ADICIONAR</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <br>
+                </div>
+                <div class="row" *ngFor="let control of telefoneFormArray.controls; let i = index">
+                    <div class="col-5">
+                        <mat-form-field class="input-width">
+                            <mat-label>Operadora</mat-label>
+                            <mat-select [formControl]="this.telefoneFormArray.controls[i]['controls']['operadora']">
+                                <mat-option *ngFor="let operadora of operadoras" [value]="operadora">{{ operadora }}</mat-option>
+                            </mat-select>
+                            <mat-error>A operadora é obrigatória</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-5">
+                        <mat-form-field  class="input-width">
+                            <input matInput placeholder="Número" [formControl]="this.telefoneFormArray.controls[i]['controls']['numero']" mask="(00)00000-0000" required>
+                            <mat-error *ngIf="telefoneFormArray.controls[i]['controls']['numero'].errors?.required">O número é obrigatório</mat-error>
+                            <mat-error *ngIf="telefoneFormArray.controls[i]['controls']['numero'].errors?.mask">Informe todos os dígitos</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-2">
+                        <button mat-icon-button class="btn-remove-contato" (click)="removerContato(i)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer"> 
+          <button type="button" block="true" mdbBtn color="indigo" class="z-depth-0" [disabled]="!form.valid" (click)="saveOrUpdate(form.value)" mdbWavesEffect>ATUALIZAR</button>
+        </div>
+      </div>
+    </div>
+</div>

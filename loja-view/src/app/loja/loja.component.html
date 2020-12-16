@@ -1,0 +1,166 @@
+<app-menu></app-menu>
+<div class="body body-background">
+    <div class="hero hero-background">
+        <div class="row">
+            <div class="col-xl-10 col-lg-8 col-md-8 col-sm-6">
+                <div class="name-page">
+                    <mat-icon>how_to_vote</mat-icon>
+                    <h2>Lojas</h2>
+                </div>
+            </div>
+            <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6">
+                <button type="button" mdbBtn color="light" block="true" class="z-depth-0" (click)="modalCreate.show()" mdbWavesEffect>NOVA LOJA</button>
+            </div>
+        </div>
+    </div>
+    <div class="progress-bar" *ngIf="loading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+    <div class="loja z-depth-1-half">
+        <div class="empty-data" *ngIf="lojas.length == 0">
+            <img src="/assets/img/info.png" width="128px" height="128px" alt="sem registros">
+            <h4>Nenhuma loja cadastrada</h4>
+            <h5><mdb-icon fas icon="quote-left"></mdb-icon> Crie uma clicando no botão acima</h5>  
+        </div>
+        <div class="row">
+            <div class="col-xl-4 col-lg-6 col-md-6" *ngFor="let loja of lojas">
+                <mdb-card>
+                    <mdb-card-body> 
+                        <mat-icon style="color: #3949ab; font-size: 30px;">shopping_basket</mat-icon>
+                        <mdb-card-title>
+                            <h4 matTooltip="Razão social">{{ loja.razaoSocial }}</h4>
+                        </mdb-card-title>
+                        <mdb-card-text>
+                            <mdb-badge matTooltip="CNPJ" class="z-depth-0" pill="true" primary="true">
+                                {{ loja.cnpj | mask: '00.000.000/0000-00' }}
+                            </mdb-badge>
+                        </mdb-card-text> 
+                        <mdb-card-text>{{ loja.telefone | mask: '(00) 00000-0000' }}</mdb-card-text>  
+                        <mdb-card-text>{{ loja.qtdFuncionarios }} funcionário(s)</mdb-card-text>  
+                        <button mat-fab class="warning-color text-white z-depth-0" matTooltip="Quero adicionar funcionários" style="margin-right: 5px" (click)="toDashboardFuncionarios(loja.id)">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                        <button mat-fab class="indigo text-white z-depth-0" matTooltip="Quero editar essa loja" (click)="showModalUpdate(loja)" style="margin-right: 5px">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-fab class="danger-color text-white z-depth-0" matTooltip="Quero apagar essa loja" (click)="delete(loja.id)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </mdb-card-body>
+                </mdb-card>
+            </div>
+        </div>
+    </div>
+</div>
+<app-footer></app-footer>
+
+<div mdbModal #modalCreate="mdbModal" class="modal fade" style="overflow-y: auto">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-right btn-hide-modal" (click)="hideModalCreate()">
+            <span>×</span>
+          </button>
+          <h4 class="modal-title w-100 text-center">NOVA LOJA</h4>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="form">
+                <div class="row">
+                    <div class="col">
+                        <mat-form-field  class="input-width">
+                            <input matInput placeholder="CNPJ" formControlName="cnpj" mask="00.000.000/0000-00" required>
+                            <mat-error *ngIf="this.form['controls']['cnpj'].errors?.required">O cnpj é obrigatório</mat-error>
+                            <mat-error *ngIf="this.form['controls']['cnpj'].errors?.mask">Informe exatamente 14 dígitos</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <mat-form-field  class="input-width">
+                            <input matInput placeholder="Razão social" maxlength="30" formControlName="razaoSocial" required>
+                            <mat-error *ngIf="this.form['controls']['razaoSocial'].errors?.required">A razão social é obrigatório</mat-error>
+                            <mat-error *ngIf="this.form['controls']['razaoSocial'].errors?.minlength">Informe no mínimo 4 dígitos</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <mat-form-field  class="input-width">
+                            <input matInput placeholder="Nome fantasia" maxlength="30" formControlName="nomeFantasia" required>
+                            <mat-error *ngIf="this.form['controls']['nomeFantasia'].errors?.required">O nome fantasia social é obrigatório</mat-error>
+                            <mat-error *ngIf="this.form['controls']['nomeFantasia'].errors?.minlength">Informe no mínimo 4 dígitos</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <mat-form-field  class="input-width">
+                            <input matInput placeholder="Telefone" formControlName="telefone" mask="(00)00000-0000" required>
+                            <mat-error *ngIf="this.form['controls']['telefone'].errors?.required">O telefone é obrigatório</mat-error>
+                            <mat-error *ngIf="this.form['controls']['telefone'].errors?.mask">Informe exatamente 11 dígitos</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer"> 
+          <button type="button" block="true" mdbBtn color="info" class="relative waves-light z-depth-0" [disabled]="!form.valid" (click)="createOrUpdate(form.value)" mdbWavesEffect>CADASTRAR</button>
+        </div>
+      </div>
+    </div>
+</div>
+<div mdbModal #modalUpdate="mdbModal" class="modal fade" style="overflow-y: auto">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-right btn-hide-modal" (click)="hideModalUpdate()">
+            <span>×</span>
+          </button>
+          <h4 class="modal-title w-100 text-center">ATUALIZAR LOJA</h4>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="form">
+                <div class="row">
+                    <div class="col">
+                        <mat-form-field  class="input-width">
+                            <input matInput placeholder="CNPJ" formControlName="cnpj" mask="00.000.000/0000-00" required>
+                            <mat-error *ngIf="this.form['controls']['cnpj'].errors?.required">O cnpj é obrigatório</mat-error>
+                            <mat-error *ngIf="this.form['controls']['cnpj'].errors?.mask">Informe exatamente 14 dígitos</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <mat-form-field  class="input-width">
+                            <input matInput placeholder="Razão social" maxlength="30" formControlName="razaoSocial" required>
+                            <mat-error *ngIf="this.form['controls']['razaoSocial'].errors?.required">A razão social é obrigatório</mat-error>
+                            <mat-error *ngIf="this.form['controls']['razaoSocial'].errors?.minlength">Informe no mínimo 4 dígitos</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <mat-form-field  class="input-width">
+                            <input matInput placeholder="Nome fantasia" maxlength="30" formControlName="nomeFantasia" required>
+                            <mat-error *ngIf="this.form['controls']['nomeFantasia'].errors?.required">O nome fantasia social é obrigatório</mat-error>
+                            <mat-error *ngIf="this.form['controls']['nomeFantasia'].errors?.minlength">Informe no mínimo 4 dígitos</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <mat-form-field  class="input-width">
+                            <input matInput placeholder="Telefone" formControlName="telefone" mask="(00)00000-0000" required>
+                            <mat-error *ngIf="this.form['controls']['telefone'].errors?.required">O telefone é obrigatório</mat-error>
+                            <mat-error *ngIf="this.form['controls']['telefone'].errors?.mask">Informe exatamente 11 dígitos</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer"> 
+          <button type="button" block="true" mdbBtn color="info" class="relative waves-light z-depth-0" [disabled]="!form.valid" (click)="createOrUpdate(form.value)" mdbWavesEffect>ATUALIZAR</button>
+        </div>
+      </div>
+    </div>
+</div>
