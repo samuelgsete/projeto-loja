@@ -17,7 +17,7 @@
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </div>
     <div class="loja z-depth-1-half">
-        <mat-form-field class="input-width" appearance="fill">
+        <mat-form-field class="search input-width" appearance="fill">
             <input [formControl]="search" matInput placeholder="Qual loja deseja gerenciar?">
             <button class="disabled-outline" mat-icon-button matSuffix>
                 <mat-icon>search</mat-icon>
@@ -138,19 +138,19 @@
                 <div class="row">
                     <div class="col">
                         <mat-form-field  class="input-width">
-                            <input matInput placeholder="CNPJ" formControlName="cnpj" mask="00.000.000/0000-00" required>
-                            <mat-error *ngIf="this.form['controls']['cnpj'].errors?.required">O cnpj é obrigatório</mat-error>
-                            <mat-error *ngIf="this.form['controls']['cnpj'].errors?.mask">Informe exatamente 14 dígitos</mat-error>
-                            <mat-error *ngIf="this.form['controls']['cnpj'].errors?.invalidCnpj">Informe um CNPJ válido</mat-error>
+                            <input matInput placeholder="Razão social" maxlength="30" formControlName="razaoSocial" required>
+                            <mat-error *ngIf="this.form['controls']['razaoSocial'].errors?.required">A razão social é obrigatório</mat-error>
+                            <mat-error *ngIf="this.form['controls']['razaoSocial'].errors?.minlength">Informe no mínimo 4 dígitos</mat-error>
                         </mat-form-field>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
                         <mat-form-field  class="input-width">
-                            <input matInput placeholder="Razão social" maxlength="30" formControlName="razaoSocial" required>
-                            <mat-error *ngIf="this.form['controls']['razaoSocial'].errors?.required">A razão social é obrigatório</mat-error>
-                            <mat-error *ngIf="this.form['controls']['razaoSocial'].errors?.minlength">Informe no mínimo 4 dígitos</mat-error>
+                            <input matInput placeholder="CNPJ" formControlName="cnpj" mask="00.000.000/0000-00" required>
+                            <mat-error *ngIf="this.form['controls']['cnpj'].errors?.required">O cnpj é obrigatório</mat-error>
+                            <mat-error *ngIf="this.form['controls']['cnpj'].errors?.mask">Informe exatamente 14 dígitos</mat-error>
+                            <mat-error *ngIf="this.form['controls']['cnpj'].errors?.invalidCnpj">Informe um CNPJ válido</mat-error>
                         </mat-form-field>
                     </div>
                 </div>

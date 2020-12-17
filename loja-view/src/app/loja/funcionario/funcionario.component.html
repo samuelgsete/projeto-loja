@@ -59,7 +59,7 @@
                 <ngx-datatable-column name="Email" [width]="100" prop="email"></ngx-datatable-column>
                 <ngx-datatable-column name="Situação" [width]="100">
                     <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                        <div class="status" [ngClass]="{'info-color': row.status, 'danger-color': !row.status }" mdbWavesEffect>{{ row.status ? 'ATIVO' : 'INATIVO' }}</div>
+                        <div class="status" matTooltip="clique para alterar o status" [ngClass]="{'info-color': row.status, 'danger-color': !row.status }" (click)="alterarStatus(row)" mdbWavesEffect>{{ row.status ? 'ATIVO' : 'INATIVO' }}</div>
                     </ng-template>
                 </ngx-datatable-column>
                 <ngx-datatable-column name="Ações" [width]="100">
@@ -129,7 +129,7 @@
                         <h5>Contatos</h5>
                     </div>
                     <div class="col-6">
-                        <button type="button" block="true" mdbBtn color="primary" class="z-depth-0" (click)="adicionarContato()" mdbWavesEffect>ADICIONAR</button>
+                        <button type="button" block="true" mdbBtn color="primary" class="z-depth-0" matTooltip="Adicione mais contatos" (click)="adicionarContato()" mdbWavesEffect>ADICIONAR</button>
                     </div>
                 </div>
                 <div class="row"><br></div>
@@ -151,7 +151,7 @@
                         </mat-form-field>
                     </div>
                     <div class="col-2">
-                        <button mat-icon-button class="btn-remove-contato" (click)="removerContato(i)">
+                        <button mat-icon-button class="btn-remove-contato" matTooltip="Remova este contato" (click)="removerContato(i)">
                             <mat-icon>delete</mat-icon>
                         </button>
                     </div>
@@ -159,7 +159,7 @@
             </form>
         </div>
         <div class="modal-footer"> 
-          <button type="button" block="true" mdbBtn color="indigo" class="z-depth-0" [disabled]="!form.valid" (click)="saveOrUpdate(form.value)" mdbWavesEffect>CADASTRAR</button>
+          <button type="button" block="true" mdbBtn color="info" class="z-depth-0" [disabled]="!form.valid" (click)="saveOrUpdate(form.value)" mdbWavesEffect>CADASTRAR</button>
         </div>
       </div>
     </div>
@@ -208,7 +208,7 @@
                         <h5>Contatos</h5>
                     </div>
                     <div class="col-6">
-                        <button type="button" block="true" mdbBtn color="primary" class="z-depth-0" (click)="adicionarContato()" mdbWavesEffect>ADICIONAR</button>
+                        <button type="button" block="true" mdbBtn color="primary" class="z-depth-0" matTooltip="Adicione mais contatos" (click)="adicionarContato()" mdbWavesEffect>ADICIONAR</button>
                     </div>
                 </div>
                 <div class="row">
@@ -232,7 +232,7 @@
                         </mat-form-field>
                     </div>
                     <div class="col-2">
-                        <button mat-icon-button class="btn-remove-contato" (click)="removerContato(i)">
+                        <button mat-icon-button class="btn-remove-contato" matTooltip="Remova este contato" (click)="removerContato(i)">
                             <mat-icon>delete</mat-icon>
                         </button>
                     </div>
@@ -240,7 +240,7 @@
             </form>
         </div>
         <div class="modal-footer"> 
-          <button type="button" block="true" mdbBtn color="indigo" class="z-depth-0" [disabled]="!form.valid" (click)="saveOrUpdate(form.value)" mdbWavesEffect>ATUALIZAR</button>
+          <button type="button" block="true" mdbBtn color="info" class="z-depth-0" [disabled]="!form.valid" (click)="saveOrUpdate(form.value)" mdbWavesEffect>ATUALIZAR</button>
         </div>
       </div>
     </div>

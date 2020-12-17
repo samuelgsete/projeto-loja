@@ -135,6 +135,18 @@ export class FuncionarioComponent implements OnInit {
     });
   }
 
+  public alterarStatus(funcionario: Funcionario) {
+    funcionario.status = !funcionario.status;
+    this.servico.update(this.lojaId, funcionario).subscribe(response => {
+      this.toastr.success('Status atualizado', 'Sucesso', { progressBar: true, positionClass: 'toast-bottom-center' });
+      this.hideModalUpdate();
+      this.paginacao = new Paginacao(); 
+      this.read();
+    }, err => {
+      this.errorMessage(err);
+    });
+  }
+
   public hideModalCreate() {
     this.modalCreate.hide();
     this.createForm();

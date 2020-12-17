@@ -1,9 +1,8 @@
-.body { 
+.body {   
     .hero {
         height: 220px;
-        padding: 60px 35px;
-       
-        .name-page {                
+        padding: 60px 35px;  
+        .name-page {             
             h2 {
                 color: #fff;
                 font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
@@ -36,6 +35,10 @@
         border-radius: 6px;
         background-color: #fff;
 
+        .search {
+            animation: fade 0.6s; 
+        }
+
         .empty-data {
             font-family: 'Lato', sans-serif;
             text-align: center;
@@ -48,18 +51,62 @@
             text-align: center;
             padding: 15px;
             margin-bottom: 30px;
+            cursor: pointer;
+            transition: transform 0.2s; 
+            animation: fade 0.5s; 
 
+            h4 { animation: up 0.9s; }
+            
             mdb-badge {
                 font-size: 16px; 
                 font-weight: normal; 
                 margin-top: 5px;
+                animation: up 0.8s;
             }
+
+            button { animation: down 0.8s; }
         }
+
+        mdb-card:hover { transform: scale(1.05) }
 
         .pagination {
             display: flex;
             flex-direction: row;
             justify-content: center;
+            animation: down 0.8s;
         }
     }  
+}
+
+@keyframes fade {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes up {
+    from {
+        opacity: 0;
+        transform: translateY(-20%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+
+@keyframes down {
+    from {
+        opacity: 0;
+        transform: translateY(30%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0%);
+    }
 }
