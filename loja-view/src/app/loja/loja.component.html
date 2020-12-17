@@ -19,7 +19,7 @@
     <div class="loja z-depth-1-half">
         <mat-form-field class="input-width" appearance="fill">
             <input [formControl]="search" matInput placeholder="Qual loja deseja gerenciar?">
-            <button mat-icon-button matSuffix>
+            <button class="disabled-outline" mat-icon-button matSuffix>
                 <mat-icon>search</mat-icon>
             </button>
         </mat-form-field>
@@ -43,13 +43,13 @@
                         </mdb-card-text> 
                         <mdb-card-text>{{ loja.telefone | mask: '(00) 00000-0000' }}</mdb-card-text>  
                         <mdb-card-text>{{ loja.qtdFuncionarios }} funcionário(s)</mdb-card-text>  
-                        <button mat-fab class="warning-color text-white z-depth-0" matTooltip="Quero adicionar funcionários" style="margin-right: 5px" (click)="toDashboardFuncionarios(loja.id)">
+                        <button mat-fab class="warning-color disabled-outline text-white z-depth-0" matTooltip="Quero adicionar funcionários" style="margin-right: 5px" (click)="toDashboardFuncionarios(loja.id)">
                             <mat-icon>add</mat-icon>
                         </button>
-                        <button mat-fab class="indigo text-white z-depth-0" matTooltip="Quero editar essa loja" (click)="showModalUpdate(loja)" style="margin-right: 5px">
+                        <button mat-fab class="indigo disabled-outline text-white z-depth-0" matTooltip="Quero editar essa loja" (click)="showModalUpdate(loja)" style="margin-right: 5px">
                             <mat-icon>edit</mat-icon>
                         </button>
-                        <button mat-fab class="danger-color text-white z-depth-0" matTooltip="Quero apagar essa loja" (click)="delete(loja.id)">
+                        <button mat-fab class="danger-color disabled-outline text-white z-depth-0" matTooltip="Quero apagar essa loja" (click)="delete(loja.id)">
                             <mat-icon>delete</mat-icon>
                         </button>
                     </mdb-card-body>
@@ -57,11 +57,11 @@
             </div>
         </div>
         <div class="pagination">
-            <button style="margin-right: 10px;" mat-fab class="indigo text-white z-depth-0" (click)="changePage(false)" [disabled]="paginacao.pagina == 1" matTooltip="regressar página">
-                <mat-icon>arrow_back</mat-icon>
+            <button class="z-depth-0 disabled-outline" mat-mini-fab color="primary" style="margin-right: 10px;"(click)="changePage(false)" [disabled]="paginacao.pagina == 1" matTooltip="regressar página">
+                <mat-icon class="text-white">arrow_back</mat-icon>
             </button>
-            <button mat-fab class="indigo text-white z-depth-0" (click)="changePage(true)" [disabled]="paginacao.pagina > paginacao.total/paginacao.tamanho" matTooltip="próxima página">
-                <mat-icon>arrow_forward</mat-icon>
+            <button class="z-depth-0 disabled-outline" mat-mini-fab color="primary"(click)="changePage(true)" [disabled]="paginacao.pagina > paginacao.total/paginacao.tamanho" matTooltip="próxima página">
+                <mat-icon class="text-white">arrow_forward</mat-icon>
             </button>
         </div>
     </div>
@@ -72,7 +72,7 @@
     <div class="modal-dialog modal-sm modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close pull-right btn-hide-modal" (click)="hideModalCreate()">
+          <button type="button" class="close pull-right disabled-outline" (click)="hideModalCreate()">
             <span>×</span>
           </button>
           <h4 class="modal-title w-100 text-center">NOVA LOJA</h4>
@@ -82,18 +82,19 @@
                 <div class="row">
                     <div class="col">
                         <mat-form-field  class="input-width">
-                            <input matInput placeholder="CNPJ" formControlName="cnpj" mask="00.000.000/0000-00" required>
-                            <mat-error *ngIf="this.form['controls']['cnpj'].errors?.required">O cnpj é obrigatório</mat-error>
-                            <mat-error *ngIf="this.form['controls']['cnpj'].errors?.mask">Informe exatamente 14 dígitos</mat-error>
+                            <input matInput placeholder="Razão social" maxlength="30" formControlName="razaoSocial" required>
+                            <mat-error *ngIf="this.form['controls']['razaoSocial'].errors?.required">A razão social é obrigatório</mat-error>
+                            <mat-error *ngIf="this.form['controls']['razaoSocial'].errors?.minlength">Informe no mínimo 4 dígitos</mat-error>
                         </mat-form-field>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
                         <mat-form-field  class="input-width">
-                            <input matInput placeholder="Razão social" maxlength="30" formControlName="razaoSocial" required>
-                            <mat-error *ngIf="this.form['controls']['razaoSocial'].errors?.required">A razão social é obrigatório</mat-error>
-                            <mat-error *ngIf="this.form['controls']['razaoSocial'].errors?.minlength">Informe no mínimo 4 dígitos</mat-error>
+                            <input matInput placeholder="CNPJ" formControlName="cnpj" mask="00.000.000/0000-00" required>
+                            <mat-error *ngIf="this.form['controls']['cnpj'].errors?.required">O cnpj é obrigatório</mat-error>
+                            <mat-error *ngIf="this.form['controls']['cnpj'].errors?.mask">Informe exatamente 14 dígitos</mat-error>
+                            <mat-error *ngIf="this.form['controls']['cnpj'].errors?.invalidCnpj">Informe um CNPJ válido</mat-error>
                         </mat-form-field>
                     </div>
                 </div>
@@ -127,7 +128,7 @@
     <div class="modal-dialog modal-sm modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close pull-right btn-hide-modal" (click)="hideModalUpdate()">
+          <button type="button" class="close pull-right disabled-outline" (click)="hideModalUpdate()">
             <span>×</span>
           </button>
           <h4 class="modal-title w-100 text-center">ATUALIZAR LOJA</h4>
@@ -140,6 +141,7 @@
                             <input matInput placeholder="CNPJ" formControlName="cnpj" mask="00.000.000/0000-00" required>
                             <mat-error *ngIf="this.form['controls']['cnpj'].errors?.required">O cnpj é obrigatório</mat-error>
                             <mat-error *ngIf="this.form['controls']['cnpj'].errors?.mask">Informe exatamente 14 dígitos</mat-error>
+                            <mat-error *ngIf="this.form['controls']['cnpj'].errors?.invalidCnpj">Informe um CNPJ válido</mat-error>
                         </mat-form-field>
                     </div>
                 </div>

@@ -54,19 +54,12 @@
                 font-weight: normal; 
                 margin-top: 5px;
             }
-    
-            button:focus {
-                outline: none;
-            }
         }
 
         .pagination {
             display: flex;
             flex-direction: row;
             justify-content: center;
-            button:focus {
-                outline: none;
-            }
         }
     }  
 }

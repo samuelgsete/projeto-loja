@@ -9,7 +9,7 @@ import { FuncionarioComponent } from './loja/funcionario/funcionario.component';
         RouterModule.forRoot([
             { path: '', component: LojaComponent },
             { path: 'loja', component: LojaComponent },
-            { path: 'funcionarios/:id', component: FuncionarioComponent }
+            { path: 'loja/:id', component: FuncionarioComponent }
         ])
     ],
     exports: [

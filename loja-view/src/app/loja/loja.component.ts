@@ -9,6 +9,7 @@ import { debounceTime } from 'rxjs/operators';
 import { Loja } from '../shared/models/loja.entity';
 import { LojaService } from '../shared/services/loja.service';
 import { Paginacao } from '../shared/models/paginacao.entity';
+import { CnpjValidator } from '../shared/validators/cnpj.validator';
 
 @Component({
   selector: 'app-loja',
@@ -67,7 +68,7 @@ export class LojaComponent implements OnInit {
     
     if(!newLoja.id) {
       this.servico.create(newLoja).subscribe(response => {
-        this.toastr.success('Criado com sucesso', 'Feito', { progressBar: true });  
+        this.toastr.success('Criado com sucesso', 'Feito', { progressBar: true, positionClass: 'toast-bottom-center' });  
         this.hideModalCreate();  
         this.paginacao = new Paginacao({ tamanho: 3 }); 
         this.read();   
@@ -77,7 +78,7 @@ export class LojaComponent implements OnInit {
     }
     else {
       this.servico.update(newLoja).subscribe(response => {
-        this.toastr.success('Atualizado com sucesso', 'Feito', { progressBar: true });
+        this.toastr.success('Atualizado com sucesso', 'Feito', { progressBar: true, positionClass: 'toast-bottom-center' });
         this.hideModalUpdate();
         this.paginacao = new Paginacao({ tamanho: 3 });; 
         this.read();
@@ -98,7 +99,7 @@ export class LojaComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.servico.delete(id).subscribe(r => {   
-          this.toastr.success('Removido com sucesso!', 'Feito', { progressBar: true });
+          this.toastr.success('Removido com sucesso!', 'Feito', { progressBar: true, positionClass: 'toast-bottom-center' });
           this.paginacao = new Paginacao({ tamanho: 3 });
           this.read();
         }, e =>{
@@ -109,15 +110,15 @@ export class LojaComponent implements OnInit {
   }
 
   public toDashboardFuncionarios(lojaId: number) {
-    this.router.navigateByUrl(`/funcionarios/${lojaId}`);
+    this.router.navigateByUrl(`/loja/${lojaId}`);
   }
   
   private errorMessage(err: any) {
     if(err.status == 0) {
-      this.toastr.error('Servidor Inacessível', 'ERRO', { progressBar: true });
+      this.toastr.error('Servidor Inacessível', 'ERRO', { progressBar: true, positionClass: 'toast-bottom-center' });
     }
     else {
-      this.toastr.error(err.error.details, 'ERRO', { progressBar: true });
+      this.toastr.error(err.error.details, 'ERRO', { progressBar: true, positionClass: 'toast-bottom-center' });
     }
   }
 
@@ -132,7 +133,6 @@ export class LojaComponent implements OnInit {
   }
 
   public showModalUpdate(loja: Loja) {
-    console.log(loja);
     this.form.patchValue({
       id: loja.id,
       cnpj: loja.cnpj,
@@ -148,7 +148,7 @@ export class LojaComponent implements OnInit {
   public createForm() {
     this.form = this._fb.group({
       id: [null],
-      cnpj: ['', [Validators.required]],
+      cnpj: ['', [Validators.required, new CnpjValidator()]],
       razaoSocial: ['', [Validators.minLength(4), Validators.maxLength(30), Validators.required]],
       nomeFantasia: ['', [Validators.minLength(4), Validators.maxLength(30), Validators.required]],
       telefone: ['', [Validators.required]],

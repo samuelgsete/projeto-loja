@@ -35,8 +35,6 @@
                 float: right;
                 margin-top:-8px;
             }
-
-            button:focus { outline: none }
         }
 
         .main {
@@ -46,8 +44,6 @@
                 box-shadow: none;
 
                 .button-actions { margin-top: -5px }
-
-                .button-actions:focus { outline: none }
 
                 .status {
                     color: #fff;

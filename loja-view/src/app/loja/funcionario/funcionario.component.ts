@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Funcionario } from 'src/app/shared/models/funcionario.entity';
 import { Paginacao } from 'src/app/shared/models/paginacao.entity';
 import { FuncionarioService } from 'src/app/shared/services/funcionario.service';
+import { CpfValidator } from 'src/app/shared/validators/cpf.validator';
 
 @Component({
   selector: 'app-funcionario',
@@ -69,7 +70,7 @@ export class FuncionarioComponent implements OnInit {
     });
     if(!novoFuncionario.id) {
       this.servico.create(this.lojaId, novoFuncionario).subscribe(response => {
-        this.toastr.success('Criado com sucesso', 'Feito', { progressBar: true });  
+        this.toastr.success('Criado com sucesso', 'Feito', { progressBar: true, positionClass: 'toast-bottom-center' });  
         this.hideModalCreate(); 
         this.paginacao = new Paginacao(); 
         this.read();   
@@ -79,7 +80,7 @@ export class FuncionarioComponent implements OnInit {
     }
     else {
       this.servico.update(this.lojaId, novoFuncionario).subscribe(response => {
-        this.toastr.success('Atualizado com sucesso', 'Feito', { progressBar: true });
+        this.toastr.success('Atualizado com sucesso', 'Feito', { progressBar: true, positionClass: 'toast-bottom-center' });
         this.hideModalUpdate();
         this.paginacao = new Paginacao(); 
         this.read();
@@ -100,7 +101,7 @@ export class FuncionarioComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.servico.delete(this.lojaId, funcionario).subscribe(r => {   
-          this.toastr.success('Removido com sucesso!', 'Feito', { progressBar: true });
+          this.toastr.success('Removido com sucesso!', 'Feito', { progressBar: true, positionClass: 'toast-bottom-center' });
           this.paginacao = new Paginacao(); 
           this.read();
         }, e =>{
@@ -122,7 +123,7 @@ export class FuncionarioComponent implements OnInit {
       if (result.value) {
         this.funcionariosSelecionados.forEach( funcionario => {
           this.servico.delete(this.lojaId, funcionario).subscribe(r => {   
-            this.toastr.success('Removido com sucesso!', 'Feito', { progressBar: true });
+            this.toastr.success('Removido com sucesso!', 'Feito', { progressBar: true, positionClass: 'toast-bottom-center' });
             this.paginacao = new Paginacao(); 
             this.read();
           }, e =>{
@@ -186,10 +187,11 @@ export class FuncionarioComponent implements OnInit {
   
   private errorMessage(err: any) {
     if(err.status == 0) {
-      this.toastr.error('Servidor Inacessível', 'ERRO', { progressBar: true });
+      this.toastr.error('Servidor Inacessível', 'ERRO', { progressBar: true, positionClass: 'toast-bottom-center' });
     }
     else {
-      this.toastr.error(err.detalhes, 'ERRO', { progressBar: true });
+      this.toastr.error(err.detalhes, 'ERRO', { progressBar: true, positionClass: 'toast-bottom-center' });
+      this.router.navigateByUrl('/loja');
     }
   }
 
@@ -197,7 +199,7 @@ export class FuncionarioComponent implements OnInit {
     this.form = this._fb.group({
       id: [null],
       nome: ['', [Validators.minLength(4), Validators.maxLength(60), Validators.required]],
-      cpf: ['', [Validators.required]],
+      cpf: ['', [Validators.required, new CpfValidator()]],
       email: ['', [Validators.email, Validators.maxLength(60), Validators.required]],
       telefones: new FormArray([]),
       status: [true]
