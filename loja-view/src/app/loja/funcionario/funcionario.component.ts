@@ -4,11 +4,11 @@ import { Router } from '@angular/router';
 
 import Swal from 'sweetalert2';
 import { debounceTime } from 'rxjs/operators';
-
 import { ToastrService } from 'ngx-toastr';
+
+import { LojaService } from 'src/app/shared/services/loja.service';
 import { Funcionario } from 'src/app/shared/models/funcionario.entity';
 import { Paginacao } from 'src/app/shared/models/paginacao.entity';
-import { FuncionarioService } from 'src/app/shared/services/funcionario.service';
 import { CpfValidator } from 'src/app/shared/validators/cpf.validator';
 
 @Component({
@@ -36,12 +36,12 @@ export class FuncionarioComponent implements OnInit {
                       private router: Router,
                       private _fb: FormBuilder,
                       private toastr: ToastrService, 
-                      private servico: FuncionarioService
+                      private servico: LojaService
                     ) { }
 
   public read() {
     this.loading = true;
-    this.servico.findAll(this.lojaId, this.paginacao).subscribe( response => {
+    this.servico.buscarFuncionarios(this.lojaId, this.paginacao).subscribe( response => {
       this.funcionarios  = response.body.content;
       this.paginacao.totalElementos = response.body.totalElements;
       console.log(response.body);
@@ -70,7 +70,7 @@ export class FuncionarioComponent implements OnInit {
       status: funcionario.status
     });
     if(!novoFuncionario.id) {
-      this.servico.create(this.lojaId, novoFuncionario).subscribe(response => {
+      this.servico.adicionarFuncionario(this.lojaId, novoFuncionario).subscribe(response => {
         this.toastr.success('Criado com sucesso', 'Feito', { progressBar: true, positionClass: 'toast-bottom-center' });  
         this.hideModalCreate(); 
         this.paginacao = new Paginacao(); 
@@ -80,7 +80,7 @@ export class FuncionarioComponent implements OnInit {
       });
     }
     else {
-      this.servico.update(this.lojaId, novoFuncionario).subscribe(response => {
+      this.servico.editarFuncionario(this.lojaId, novoFuncionario).subscribe(response => {
         this.toastr.success('Atualizado com sucesso', 'Feito', { progressBar: true, positionClass: 'toast-bottom-center' });
         this.hideModalUpdate();
         this.paginacao = new Paginacao(); 
@@ -101,7 +101,7 @@ export class FuncionarioComponent implements OnInit {
       cancelButtonText: 'Não'
     }).then((result) => {
       if (result.value) {
-        this.servico.delete(this.lojaId, funcionario).subscribe(r => {   
+        this.servico.excluirFuncionario(this.lojaId, funcionario).subscribe(r => {   
           this.toastr.success('Removido com sucesso!', 'Feito', { progressBar: true, positionClass: 'toast-bottom-center' });
           this.paginacao = new Paginacao(); 
           this.read();
@@ -123,7 +123,7 @@ export class FuncionarioComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.funcionariosSelecionados.forEach( funcionario => {
-          this.servico.delete(this.lojaId, funcionario).subscribe(r => {   
+          this.servico.excluirFuncionario(this.lojaId, funcionario).subscribe(r => {   
             this.toastr.success('Removido com sucesso!', 'Feito', { progressBar: true, positionClass: 'toast-bottom-center' });
             this.paginacao = new Paginacao(); 
             this.read();
@@ -138,7 +138,7 @@ export class FuncionarioComponent implements OnInit {
 
   public alterarStatus(funcionario: Funcionario) {
     funcionario.status = !funcionario.status;
-    this.servico.update(this.lojaId, funcionario).subscribe(response => {
+    this.servico.editarFuncionario(this.lojaId, funcionario).subscribe(response => {
       this.toastr.success('Status atualizado', 'Sucesso', { progressBar: true, positionClass: 'toast-bottom-center' });
       this.hideModalUpdate();
       this.paginacao = new Paginacao(); 

@@ -36,7 +36,7 @@ export class LojaComponent implements OnInit {
 
   public read() {
     this.loading = true;
-    this.servico.findAll(this.paginacao).subscribe( response => {
+    this.servico.buscarTodasAsLojas(this.paginacao).subscribe( response => {
       this.lojas = response.body.content;
       this.paginacao.totalElementos = response.body.totalElements;
       this.paginacao.eAultima = response.body.last;
@@ -69,7 +69,7 @@ export class LojaComponent implements OnInit {
     });
     
     if(!newLoja.id) {
-      this.servico.create(newLoja).subscribe(response => {
+      this.servico.criarLoja(newLoja).subscribe(response => {
         this.toastr.success('Criado com sucesso', 'Feito', { progressBar: true, positionClass: 'toast-bottom-center' });  
         this.hideModalCreate();  
         this.paginacao = new Paginacao({ tamanho: 3 }); 
@@ -79,7 +79,7 @@ export class LojaComponent implements OnInit {
       });
     }
     else {
-      this.servico.update(newLoja).subscribe(response => {
+      this.servico.editarLoja(newLoja).subscribe(response => {
         this.toastr.success('Atualizado com sucesso', 'Feito', { progressBar: true, positionClass: 'toast-bottom-center' });
         this.hideModalUpdate();
         this.paginacao = new Paginacao({ tamanho: 3 });; 
@@ -100,7 +100,7 @@ export class LojaComponent implements OnInit {
       cancelButtonText: 'Não'
     }).then((result) => {
       if (result.value) {
-        this.servico.delete(id).subscribe(r => {   
+        this.servico.excluirLoja(id).subscribe(r => {   
           this.toastr.success('Removido com sucesso!', 'Feito', { progressBar: true, positionClass: 'toast-bottom-center' });
           this.paginacao = new Paginacao({ tamanho: 3 });
           this.read();
@@ -112,7 +112,7 @@ export class LojaComponent implements OnInit {
   }
 
   public toDashboardFuncionarios(lojaId: number) {
-    this.router.navigateByUrl(`/loja/${lojaId}`);
+    this.router.navigateByUrl(`/loja/${lojaId}/funcionarios`);
   }
   
   private errorMessage(err: any) {

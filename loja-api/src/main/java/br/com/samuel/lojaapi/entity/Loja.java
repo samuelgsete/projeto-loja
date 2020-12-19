@@ -1,10 +1,7 @@
 package br.com.samuel.lojaapi.entity;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -91,25 +88,10 @@ public class Loja extends BaseEntity {
     }
 
     public void removerFuncionario(Funcionario funcionario) {
-        boolean b = funcionarios.remove(funcionario);
-        System.out.println(b);
+        funcionarios.remove(funcionario);
         qtdFuncionarios = funcionarios.size();
     }
-
-    public void atualizarFuncionario(Funcionario funcionarioAtualizado) {
-        List<Funcionario> list = funcionarios
-            .stream()
-            .filter( funcionario -> funcionario.id == funcionarioAtualizado.id)
-            .collect(Collectors.toList());
-
-        Funcionario funcionarioDesatualizado = list.get(0);
-        list = new ArrayList<Funcionario>(funcionarios);
-        int index = list.indexOf(funcionarioDesatualizado);
-        list.set(index, funcionarioAtualizado);
-        funcionarios = new HashSet<Funcionario>(list);
-        
-    }
-
+    
     @Override
     public boolean equals(Object obj) {
         if(this == obj) { 

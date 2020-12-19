@@ -6,12 +6,12 @@ import { FuncionarioComponent } from './funcionario/funcionario.component';
 import { SharedModule } from '../shared/shared.module';
 import { LojaService } from '../shared/services/loja.service';
 import { LayoutModule } from '../layout/layout.module';
-import { FuncionarioService } from '../shared/services/funcionario.service';
 
 @NgModule({
   declarations: [
     LojaComponent, 
-    FuncionarioComponent]
+    FuncionarioComponent
+  ]
   ,
   imports: [
     CommonModule,
@@ -19,9 +19,6 @@ import { FuncionarioService } from '../shared/services/funcionario.service';
     LayoutModule,
   ],
   exports: [LojaComponent],
-  providers: [
-    LojaService,
-    FuncionarioService
-  ]
+  providers: [LojaService]
 })
 export class LojaModule { }

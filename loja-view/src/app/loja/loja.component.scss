@@ -74,6 +74,12 @@
             flex-direction: row;
             justify-content: center;
             animation: down 0.8s;
+
+            button { transition: transform 0.6s; }
+
+            button:hover {
+                transform: scale(1.3)
+            }
         }
     }  
 }
