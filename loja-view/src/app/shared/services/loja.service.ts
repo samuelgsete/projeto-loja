@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 
 import { Loja } from "../models/loja.entity";
+import { Paginacao } from "../models/paginacao.entity";
 
 @Injectable()
 export class LojaService {
@@ -10,8 +11,8 @@ export class LojaService {
 
     public constructor(private http: HttpClient) {}
 
-    public findAll(palavra: string, pagina: number) {
-        const _params = new HttpParams().set('palavra', `${palavra}`).set('pagina', `${pagina}`);
+    public findAll(paginacao: Paginacao) {
+        const _params = new HttpParams().set('filtro', `${paginacao.filtro}`).set('page', `${paginacao.pagina}`).set('size', `${paginacao.tamanho}`);
         return this.http.get<any>(this.urlBase, {
             observe: 'response', params: _params
         });

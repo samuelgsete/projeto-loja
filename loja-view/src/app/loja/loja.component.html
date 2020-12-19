@@ -57,10 +57,10 @@
             </div>
         </div>
         <div class="pagination">
-            <button class="z-depth-0 disabled-outline" mat-mini-fab color="primary" style="margin-right: 10px;"(click)="changePage(false)" [disabled]="paginacao.pagina == 1" matTooltip="regressar página">
+            <button class="z-depth-0 disabled-outline" mat-mini-fab color="primary" style="margin-right: 10px;"(click)="changePage(false)" [disabled]="paginacao.pagina == 0" matTooltip="regressar página">
                 <mat-icon class="text-white">arrow_back</mat-icon>
             </button>
-            <button class="z-depth-0 disabled-outline" mat-mini-fab color="primary"(click)="changePage(true)" [disabled]="paginacao.pagina > paginacao.total/paginacao.tamanho" matTooltip="próxima página">
+            <button class="z-depth-0 disabled-outline" mat-mini-fab color="primary"(click)="changePage(true)" [disabled]="paginacao.eAultima" matTooltip="próxima página">
                 <mat-icon class="text-white">arrow_forward</mat-icon>
             </button>
         </div>

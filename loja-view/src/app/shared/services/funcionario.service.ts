@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 
 import { Funcionario } from "../models/funcionario.entity";
+import { Paginacao } from "../models/paginacao.entity";
 
 @Injectable()
 export class FuncionarioService {
@@ -10,8 +11,8 @@ export class FuncionarioService {
 
     public constructor(private http: HttpClient) {}
 
-    public findAll(lojaId: number, palavra: string, pagina: number) {
-        const _params = new HttpParams().set('palavra', `${palavra}`).set('pagina', `${pagina}`);
+    public findAll(lojaId: number, paginacao: Paginacao) {
+        const _params = new HttpParams().set('filtro', `${paginacao.filtro}`).set('page', `${paginacao.pagina}`).set('size', `${paginacao.tamanho}`);
         return this.http.get<any>(this.urlBase.concat(`/${lojaId}`), {
             observe: 'response', params: _params
         });

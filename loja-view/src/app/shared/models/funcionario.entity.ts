@@ -1,3 +1,4 @@
+import { Loja } from "./loja.entity";
 import { Telefone } from "./telefone.entity";
 
 export class Funcionario {
@@ -8,6 +9,7 @@ export class Funcionario {
     public telefones: Telefone[] = [];
     public email: string;
     public status: boolean;
+    public loja: Loja;
     
     public constructor(values: Object = {}) { Object.assign(this, values) }
 }

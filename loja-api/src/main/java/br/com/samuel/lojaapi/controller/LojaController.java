@@ -1,6 +1,8 @@
 package br.com.samuel.lojaapi.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.samuel.lojaapi.entity.FiltroBusca;
 import br.com.samuel.lojaapi.entity.Loja;
-import br.com.samuel.lojaapi.entity.Tupla;
 import br.com.samuel.lojaapi.services.LojaService;
 
 @RestController
@@ -29,9 +29,8 @@ public class LojaController {
     }
 
     @GetMapping
-    public Tupla<Loja> findAll(@RequestParam("palavra") String palavra, @RequestParam("pagina") int pagina) { 
-        FiltroBusca filtro = new FiltroBusca(palavra, pagina, 3);
-        return lojaService.findAll(filtro); 
+    public Page<Loja> findAll(@RequestParam("filtro") String filtro, Pageable pageable) { 
+        return lojaService.findAll(filtro, pageable); 
     }
 
     @PostMapping

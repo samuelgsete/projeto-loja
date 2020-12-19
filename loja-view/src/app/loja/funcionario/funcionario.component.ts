@@ -41,9 +41,10 @@ export class FuncionarioComponent implements OnInit {
 
   public read() {
     this.loading = true;
-    this.servico.findAll(this.lojaId, this.paginacao.palavra, this.paginacao.pagina).subscribe( response => {
-      this.funcionarios = response.body.data;
-      this.paginacao.total = response.body.count;
+    this.servico.findAll(this.lojaId, this.paginacao).subscribe( response => {
+      this.funcionarios  = response.body.content;
+      this.paginacao.totalElementos = response.body.totalElements;
+      console.log(response.body);
       this.loading = false;
     }, responseError => {
       this.errorMessage(responseError.error);
@@ -55,7 +56,7 @@ export class FuncionarioComponent implements OnInit {
   }
 
   public setPage(event: any) {
-    this.paginacao.pagina = event.offset + 1;
+    this.paginacao.pagina = event.offset;
     this.read();
   }
 
@@ -223,8 +224,9 @@ export class FuncionarioComponent implements OnInit {
     this.read();
     this.search.valueChanges.pipe(debounceTime(700)).subscribe(value => {
       this.paginacao = new Paginacao({
-        palavra: value,
-        pagina: 1,
+        filtro: value,
+        pagina: 0,
+        tamanho: 5
       });
       this.read();
     });

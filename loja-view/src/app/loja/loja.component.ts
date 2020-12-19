@@ -36,9 +36,11 @@ export class LojaComponent implements OnInit {
 
   public read() {
     this.loading = true;
-    this.servico.findAll(this.paginacao.palavra, this.paginacao.pagina).subscribe( response => {
-      this.lojas = response.body.data;
-      this.paginacao.total = response.body.count;
+    this.servico.findAll(this.paginacao).subscribe( response => {
+      this.lojas = response.body.content;
+      this.paginacao.totalElementos = response.body.totalElements;
+      this.paginacao.eAultima = response.body.last;
+      console.log(this.paginacao);
       this.loading = false;
     }, err => {
       this.errorMessage(err);
@@ -162,8 +164,8 @@ export class LojaComponent implements OnInit {
     this.createForm();
     this.search.valueChanges.pipe(debounceTime(700)).subscribe(value => {
       this.paginacao = new Paginacao({
-        palavra: value,
-        pagina: 1,
+        filtro: value,
+        pagina: 0,
         tamanho: 3
       });
       this.read();

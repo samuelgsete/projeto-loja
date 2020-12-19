@@ -8,7 +8,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Funcionario extends BaseEntity {
@@ -19,7 +22,7 @@ public class Funcionario extends BaseEntity {
     @Column(nullable = false, unique = false) 
     private String cpf;
 
-    @OneToMany(fetch= FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "funcionario_id")
     private Set<Telefone> telefones = new HashSet<Telefone>();
 
@@ -28,6 +31,11 @@ public class Funcionario extends BaseEntity {
 
     @Column
     private Boolean status = true;
+    
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="loja_id", referencedColumnName="id")
+    private Loja loja;
 
     public Funcionario() {}
 
@@ -69,6 +77,14 @@ public class Funcionario extends BaseEntity {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+    
+    public Loja getLoja() {
+    	return this.loja;
+    }
+    
+    public void setLoja(Loja loja) {
+    	this.loja = loja;
     }
 
     @Override

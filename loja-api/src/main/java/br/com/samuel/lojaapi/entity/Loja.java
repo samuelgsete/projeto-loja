@@ -9,9 +9,9 @@ import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Loja extends BaseEntity {
@@ -31,8 +31,8 @@ public class Loja extends BaseEntity {
     @Column(nullable = true, unique = false)
     private Integer qtdFuncionarios = 0;
 
-    @OneToMany(fetch= FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "loja_id")
+    @JsonIgnore
+    @OneToMany(mappedBy = "loja", cascade= CascadeType.ALL)
     private Set<Funcionario> funcionarios = new HashSet<Funcionario>();
 
     public Loja() {}

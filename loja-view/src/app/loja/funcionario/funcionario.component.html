@@ -34,8 +34,8 @@
                 (select)="whenSelecting($event)"
                 [selected]="funcionariosSelecionados"
                 [externalPaging]="true"
-                [count]="paginacao.total"
-                [offset]="paginacao.pagina-1"
+                [count]="paginacao.totalElementos"
+                [offset]="paginacao.pagina"
                 [limit]="paginacao.tamanho"
                 (page)="setPage($event)"
             >
